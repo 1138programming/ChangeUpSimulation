@@ -1,4 +1,4 @@
-package main.display;
+package main.game.display;
 
 import java.awt.Canvas;
 import java.awt.image.BufferStrategy;

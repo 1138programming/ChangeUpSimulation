@@ -1,4 +1,4 @@
-package main.game.geometry;
+package main.game.geometry.data;
 
 public class Point {
     /**
@@ -136,15 +136,15 @@ public class Point {
      * @param angle     Angle to rotate by
      * @return          This point after the rotation
      */
-    public Point rotate(Point reference, double angle) {
+    public Point rotate(Point reference, Angle angle) {
         if (reference == this) {
             return this;
         }
 
         this.subtract(reference);
 
-        double sin = Math.sin(angle);
-        double cos = Math.cos(angle);
+        double sin = Math.sin(angle.getValue());
+        double cos = Math.cos(angle.getValue());
 
         this.x = this.x * cos + this.y * -sin;
         this.y = this.x * sin + this.y * cos;
@@ -163,22 +163,20 @@ public class Point {
      * @param angle     Angle to rotate by
      * @return          Resulting point of the rotation
      */
-    public static Point rotate(Point point, Point reference, double angle) {
+    public static Point rotate(Point point, Point reference, Angle angle) {
         return point.copy().rotate(reference, angle);
     }
 
     /**
      * @brief Gets the angle between the x axis and the line between this point and the given point
      * 
+     * Assumes that this point lies on the x axis
+     * 
      * @param point Point to get the angle to
      * @return      The angle
      */
-    public double getAngle(Point point) {
-        double angle = Math.atan2(point.y - y, point.x - x);
-        if (angle < 0) {
-            angle += 2 * Math.PI;
-        }
-        return angle;
+    public Angle getAngle(Point point) {
+        return new Angle(Math.atan2(point.y - y, point.x - x));
     }
 
     /**
@@ -234,6 +232,14 @@ public class Point {
      */
     public Point midpoint(Point point) {
         return this.copy().add(point).scale(0.5);
+    }
+
+    public Vector toVector() {
+        return new Vector(this.x, this.y);
+    }
+
+    public static Vector toVector(Point point) {
+        return point.toVector();
     }
 
     /**

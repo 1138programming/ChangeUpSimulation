@@ -1,4 +1,4 @@
-package build;
+package main.game.display;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -16,8 +16,6 @@ public abstract class Display {
         this.debugMode = debugMode;
 
         displayFrame = new DisplayFrame(this, debugMode);
-
-        DisplayObject.setDisplay(this);
     }
 
     public Display() {
