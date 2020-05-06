@@ -4,18 +4,21 @@ import main.game.geometry.data.Point;
 import main.game.geometry.data.Vector;
 import main.game.geometry.data.Line;
 import main.game.geometry.data.MathUtil;
+import main.game.display.Display;
+import java.awt.Graphics;
 
 public class Wall extends Shape {
     public final Point A; // Leftmost point on the wall, with the wall normal facing up
     public final Point B; // Rightmost point on the wall, with the wall normal facing up
     public final Vector normal; // Wall normal
     public final Line line; // Constants for the equation of the line representing this wall
-    private double coefRes = 1;
-    private double mass = 1;
-    private double invMass = 1;
-    private Vector accel = new Vector(0, 0);
-    private Vector velocity = new Vector(0, 0);
-    private Point pos;
+    // protected Display display;
+    // protected double coefRes = 1;
+    // protected double mass = 1;
+    // protected double invMass = 1;
+    // protected Vector accel = new Vector(0, 0);
+    // protected Vector velocity = new Vector(0, 0);
+    // protected Point pos;
 
     public Wall(Point A, Point B) {
         this.A = A;
@@ -39,7 +42,7 @@ public class Wall extends Shape {
         if (Point.isNaP(intersection)) {
             return false;
         }
-        return MathUtil.inRange(A.x, B.x, intersection.x) && MathUtil.inRange(A.y, B.y, intersection.y); // Checks if the given point is on the wall
+        return MathUtil.inRange(intersection.x, A.x, B.x) && MathUtil.inRange(intersection.y, A.y, B.y); // Checks if the given point is on the wall
     }
 
     @Override
@@ -70,5 +73,24 @@ public class Wall extends Shape {
     @Override
     public Point getPos() {
         return pos;
+    }
+
+    @Override
+    public void setDisplay(Display display) {
+        this.display = display;
+    }
+
+    @Override
+    public void tick(long dt) {
+    }
+
+    @Override
+    public void render(Graphics g) {
+        //g.setColor(Color.BLACK);
+        //g.drawLine((int)(Field.displayRatio * A.x), (int)(Field.displayRatio * A.y), (int)(Field.displayRatio * B.x), (int)(Field.displayRatio * B.y));
+    }
+
+    @Override
+    public void close() {
     }
 }

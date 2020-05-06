@@ -2,9 +2,10 @@ package main.game;
 
 import main.game.geometry.shapes.Circle;
 import main.game.geometry.data.Point;
-import main.game.display.DisplayObject;
+import java.awt.Graphics;
 
-public class Ball extends Circle implements DisplayObject {
+public class Ball extends Circle {
+    public static final double frictionCoef = 0.9;
     public static final double radius = 0.08;
     public final AllianceColor color;
     private boolean active = true;
@@ -26,11 +27,25 @@ public class Ball extends Circle implements DisplayObject {
     @Override
     public void tick(long dt) {
         if (active) {
-            
+            getVelocity().scale(frictionCoef);
+            updatePos(dt);
+        }
+    }
+
+    @Override
+    public void render(Graphics g) {
+        if (active) {
+            g.setColor(color.javaColor);
+            g.fillOval((int)(Field.displayRatio * (pos.x - radius)), (int)(Field.displayRatio * (Field.height - pos.y - radius)), (int)(Field.displayRatio * radius * 2), (int)(Field.displayRatio * radius * 2));
         }
     }
 
     @Override
     public void close() {
+    }
+
+    @Override
+    public String toString() {
+        return "Ball: x = " + Field.displayRatio * pos.x + ", y = " + Field.displayRatio * pos.y + ", radius = " + Field.displayRatio * radius + ". Active: " + active;
     }
 }

@@ -1,14 +1,14 @@
 package main.game.display;
 
+import main.game.controllers.KeyLookup;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.util.ArrayList;
 
 public abstract class Display {
-    DisplayFrame displayFrame;
-    Color bgColor;
-    ArrayList<DisplayObject> objects = new ArrayList<DisplayObject>();
+    private DisplayFrame displayFrame;
+    private ArrayList<DisplayObject> objects = new ArrayList<DisplayObject>();
 
     public boolean debugMode;
 
@@ -16,6 +16,7 @@ public abstract class Display {
         this.debugMode = debugMode;
 
         displayFrame = new DisplayFrame(this, debugMode);
+        displayFrame.addKeyListener(KeyLookup.getInstance());
     }
 
     public Display() {
@@ -24,6 +25,10 @@ public abstract class Display {
 
     public abstract String getName();
     public abstract Color getBgColor();
+
+    public DisplayFrame getDisplayFrame() {
+        return displayFrame;
+    }
 
     public void tick(long dt) {
         for (DisplayObject object : objects) {
@@ -50,6 +55,7 @@ public abstract class Display {
 
     protected void addObject(DisplayObject object) {
         objects.add(object);
+        object.setDisplay(this);
     }
 
     protected void removeObject(DisplayObject object) {

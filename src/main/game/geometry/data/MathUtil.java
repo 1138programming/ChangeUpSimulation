@@ -6,7 +6,7 @@ public class MathUtil {
      * 
      * If two values differ by less than epsilon, they are considered equal
      */
-    public static final double epsilon = 0.0000001;
+    public static final double epsilon = 0.000001;
 
     /**
      * @brief Returns whether a value is in range of two bounds.

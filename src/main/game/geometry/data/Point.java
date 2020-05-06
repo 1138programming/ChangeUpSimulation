@@ -238,6 +238,10 @@ public class Point {
         return new Vector(this.x, this.y);
     }
 
+    public String toString() {
+        return "Point: x = " + x + ", y = " + y;
+    }
+
     public static Vector toVector(Point point) {
         return point.toVector();
     }

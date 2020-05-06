@@ -32,6 +32,20 @@ public class Angle {
         return this;
     }
 
+    public Angle subtract(Angle B) {
+        value -= B.getValue();
+        normalize();
+
+        return this;
+    }
+
+    public Angle subtract(double B) {
+        value -= B;
+        normalize();
+
+        return this;
+    }
+
     public Angle scale(double scalar) {
         value *= scalar;
         normalize();
@@ -55,6 +69,10 @@ public class Angle {
     }
 
     public static double normalize(double value) {
+        if (0 <= value && value <= TAU) {
+            return value;
+        }
+
         return value - Math.floor(value / TAU) * TAU;
     }
 

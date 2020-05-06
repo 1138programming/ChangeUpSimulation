@@ -49,6 +49,10 @@ public class Line {
         return new Point(x, y);
     }
 
+    public String toString() {
+        return "A = " + A + ", B = " + B + ", C = " + C;
+    }
+
     public static Point getIntersection(Line A, Line B) {
         return A.getIntersection(B);
     }

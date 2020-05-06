@@ -5,11 +5,9 @@ import java.awt.image.BufferStrategy;
 import java.awt.Graphics;
 import java.awt.Dimension;
 
-import javax.swing.JFrame;
-
 public class DisplayFrame extends Canvas implements Runnable {
-    public static final int WIDTH = 1000, HEIGHT = WIDTH / 4 * 3;
-    public static final int FPS = 60;
+    public static final int WIDTH = 978, HEIGHT = 1006;
+    public static final int FPS = 50;
     
     private Thread thread;
     private boolean running = false;
@@ -30,6 +28,10 @@ public class DisplayFrame extends Canvas implements Runnable {
 
     public DisplayFrame(Display display) {
         this(display, false);
+    }
+
+    public DisplayWindow getDisplayWindow() {
+        return displayWindow;
     }
 
     public synchronized void start() {

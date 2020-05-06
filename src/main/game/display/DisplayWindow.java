@@ -13,7 +13,8 @@ public class DisplayWindow extends Canvas {
         frame.setMinimumSize(size);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setResizable(false);
+        //frame.setResizable(false);
+        frame.setResizable(true);
         frame.setLocationRelativeTo(null);
         frame.add(displayFrame);
         frame.setVisible(true);

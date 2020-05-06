@@ -2,15 +2,18 @@ package main.game.geometry.shapes;
 
 import main.game.geometry.data.Point;
 import main.game.geometry.data.Vector;
+import main.game.display.Display;
+import java.awt.Graphics;
 
 public class Circle extends Shape {
     public final double radius;
-    private double coefRes;
-    private double mass;
-    private double invMass;
-    private Vector accel = new Vector(0, 0);
-    private Vector velocity = new Vector(0, 0);
-    private Point pos;
+    // protected Display display;
+    // protected double coefRes;
+    // protected double mass;
+    // protected double invMass;
+    // protected Vector accel = new Vector(0, 0);
+    // protected Vector velocity = new Vector(0, 0);
+    // protected Point pos;
 
     public Circle(Point pos, double radius, double coefRes, double mass) {
         this.pos = pos;
@@ -68,5 +71,22 @@ public class Circle extends Shape {
 
     public void setPos(double x, double y) {
         pos = new Point(x, y);
+    }
+
+    @Override
+    public void setDisplay(Display display) {
+        this.display = display;
+    }
+
+    @Override
+    public void tick(long dt) {
+    }
+
+    @Override
+    public void render(Graphics g) {
+    }
+
+    @Override
+    public void close() {
     }
 }

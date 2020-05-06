@@ -1,14 +1,19 @@
 package main;
 
-import main.display.Display;
+import main.game.display.Display;
+import main.game.Ball;
+import main.game.Goal;
+import main.game.Robot;
+import main.game.Field;
+import main.game.controllers.ArrowKeyController;
+import main.game.geometry.data.Line;
+import main.game.geometry.data.Point;
 import java.awt.Dimension;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Main extends Display {
     public static final String name = "Main";
-    public static final Color bgColor = Color.BLACK;
+    public static final Color bgColor = Color.GREEN;
 
     public static void main(String[] args) {
         boolean debugMode = false;
@@ -22,6 +27,29 @@ public class Main extends Display {
 
     Main(boolean debugMode) {
         super(debugMode);
+
+        Field field = new Field();
+
+        field.blueAlliance.get(0).setController(new ArrowKeyController());
+
+        addObject(field);
+
+        for (Ball ball : field.balls) {
+            System.out.println(ball.toString());
+        }
+
+        for (Goal goal : field.goals) {
+            System.out.println(goal.toString());
+        }
+
+        for (Robot robot : field.robots) {
+            System.out.println(robot.toString());
+        }
+
+        Line line1 = new Line(1, 3, 4);
+        Line line2 = new Line(2, 1, 2);
+        Point intersection = line1.getIntersection(line2);
+        System.out.println(intersection);
 
         start();
     }

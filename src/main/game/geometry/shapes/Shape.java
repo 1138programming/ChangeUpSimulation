@@ -1,15 +1,26 @@
 package main.game.geometry.shapes;
 
+import main.game.display.Display;
+import main.game.display.DisplayObject;
 import main.game.geometry.data.Point;
 import main.game.geometry.data.Vector;
 import main.game.geometry.data.Line;
 import main.game.geometry.data.Manifold;
+import main.game.Robot;
 
 /**
  * Parent class for shapes
  * Handles collision detection between shapes
  */
-public abstract class Shape {
+public abstract class Shape implements DisplayObject {
+    protected Display display;
+    protected double coefRes;
+    protected double mass;
+    protected double invMass;
+    protected Vector accel = new Vector(0, 0);
+    protected Vector velocity = new Vector(0, 0);
+    protected Point pos;
+
     public abstract double getCoefRes();
     public abstract double getMass();
     public abstract double getInvMass();
@@ -18,11 +29,12 @@ public abstract class Shape {
     public abstract Point getPos();
 
     public void updateVel(long dt) {
-        getVelocity().add(Vector.scale(getAccel(), dt));
+        velocity.add(Vector.scale(accel, (double)dt / 1000));
     }
 
     public void updatePos(long dt) {
-        getPos().add(Vector.scale(getVelocity(), dt).toPoint());
+        pos.add(Vector.scale(velocity, (double)dt / 1000).toPoint());
+        //pos.add(velocity.toPoint());
     }
 
     /**
@@ -32,7 +44,7 @@ public abstract class Shape {
         Point posA = circle1.getPos();
         Point posB = circle2.getPos();
         double sqrDistance = posA.sqrDistance(posB);
-        double minSqrDistance = (circle1.radius + circle2.radius) * (circle1.radius * circle2.radius);
+        double minSqrDistance = (circle1.radius + circle2.radius) * (circle1.radius + circle2.radius);
 
         if (sqrDistance > minSqrDistance) {
             return Manifold.NaM;
@@ -67,6 +79,13 @@ public abstract class Shape {
 
         if (!wall.containsIntersection(intersection)) {
             return endpointCheck(wall, circle);
+        }
+
+        double sqrDistance = p3.sqrDistance(intersection);
+        double minSqrDistance = circle.radius * circle.radius;
+
+        if (sqrDistance > minSqrDistance) {
+            return Manifold.NaM;
         }
 
         double depth = circle.radius - intersection.distance(p3);

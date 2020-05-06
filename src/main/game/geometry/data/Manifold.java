@@ -1,6 +1,7 @@
 package main.game.geometry.data;
 
 import main.game.geometry.shapes.Shape;
+import main.game.Field;
 
 /**
  * Class to hold information about a collision
@@ -12,7 +13,7 @@ public class Manifold {
     public final double depth;
     public static final Manifold NaM = new Manifold();
     public static final double percent = 0.2; // Positional correction percentage
-    public static final double slop = 0.01; // Positional correction slop to avoid jittering
+    public static final double slop = 0.01 / Field.displayRatio; // Positional correction slop to avoid jittering
     private boolean resolved = false;
 
     public Manifold(Shape A, Shape B, Vector normal, double depth) {
