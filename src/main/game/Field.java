@@ -166,6 +166,8 @@ public class Field implements DisplayObject {
         for (int i = 0; i < 2; i++) {
             Robot redRobot = new Robot(AllianceColor.RED);
             Robot blueRobot = new Robot(AllianceColor.BLUE);
+            redRobot.setField(this);
+            blueRobot.setField(this);
             redAlliance.add(redRobot);
             blueAlliance.add(blueRobot);
             robots.add(redRobot);
@@ -214,8 +216,8 @@ public class Field implements DisplayObject {
             redRobot.setAngle(0);
             blueRobot.setAngle(Math.PI);
 
-            redRobot.collectBall(redBalls.get(redIndex));
-            blueRobot.collectBall(blueBalls.get(blueIndex));
+            redRobot.addBall(redBalls.get(redIndex));
+            blueRobot.addBall(blueBalls.get(blueIndex));
             redIndex++;
             blueIndex++;
         }

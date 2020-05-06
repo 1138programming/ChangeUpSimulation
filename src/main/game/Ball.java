@@ -2,10 +2,11 @@ package main.game;
 
 import main.game.geometry.shapes.Circle;
 import main.game.geometry.data.Point;
+import main.game.geometry.data.Vector;
 import java.awt.Graphics;
 
 public class Ball extends Circle {
-    public static final double frictionCoef = 0.9;
+    public static final double frictionCoef = 0.99;
     public static final double radius = 0.08;
     public final AllianceColor color;
     private boolean active = true;
@@ -22,6 +23,9 @@ public class Ball extends Circle {
 
     public void setActive(boolean active) {
         this.active = active;
+        if (active == false) {
+            velocity = new Vector(0, 0);
+        }
     }
 
     @Override

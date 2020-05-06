@@ -19,4 +19,12 @@ public class NullController implements Controller {
     public boolean turnLeft() {
         return false;
     }
+
+    public boolean collect() {
+        return false;
+    }
+
+    public boolean eject() {
+        return false;
+    }
 }

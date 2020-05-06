@@ -14,6 +14,11 @@ public class Vector {
         this.y = magnitude * Math.sin(angle.value);
     }
 
+    public Vector(Point startpoint, Point endpoint) {
+        this.x = endpoint.x - startpoint.x;
+        this.y = endpoint.y - startpoint.y;
+    }
+
     public Vector copy() {
         return new Vector(this.x, this.y);
     }
@@ -34,6 +39,14 @@ public class Vector {
 
     public Angle getAngle() {
         return new Angle(Math.atan2(this.y, this.x));
+    }
+
+    public Angle getAngle(Vector B) {
+        return new Angle(Math.acos(this.dot(B) / (this.getMagnitude() * B.getMagnitude())));
+    }
+
+    public double getCosAngle(Vector B) {
+        return this.dot(B) / (this.getMagnitude() * B.getMagnitude());
     }
 
     public double getMagnitude() {
@@ -68,6 +81,10 @@ public class Vector {
 
     public static Vector scale(Vector A, double scalar) {
         return A.copy().scale(scalar);
+    }
+
+    public static Angle getAngle(Vector A, Vector B) {
+        return A.getAngle(B);
     }
 
     public static double dot(Vector A, Vector B) {

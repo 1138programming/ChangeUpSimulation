@@ -6,7 +6,6 @@ import main.game.geometry.data.Point;
 import main.game.geometry.data.Vector;
 import main.game.geometry.data.Line;
 import main.game.geometry.data.Manifold;
-import main.game.Robot;
 
 /**
  * Parent class for shapes

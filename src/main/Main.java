@@ -6,9 +6,7 @@ import main.game.Goal;
 import main.game.Robot;
 import main.game.Field;
 import main.game.controllers.ArrowKeyController;
-import main.game.geometry.data.Line;
-import main.game.geometry.data.Point;
-import java.awt.Dimension;
+import main.game.controllers.WASDController;
 import java.awt.Color;
 
 public class Main extends Display {
@@ -31,25 +29,23 @@ public class Main extends Display {
         Field field = new Field();
 
         field.blueAlliance.get(0).setController(new ArrowKeyController());
+        field.redAlliance.get(0).setController(new WASDController());
 
         addObject(field);
 
-        for (Ball ball : field.balls) {
-            System.out.println(ball.toString());
-        }
+        if (debugMode) {
+            for (Ball ball : field.balls) {
+                System.out.println(ball.toString());
+            }
 
-        for (Goal goal : field.goals) {
-            System.out.println(goal.toString());
-        }
+            for (Goal goal : field.goals) {
+                System.out.println(goal.toString());
+            }
 
-        for (Robot robot : field.robots) {
-            System.out.println(robot.toString());
+            for (Robot robot : field.robots) {
+                System.out.println(robot.toString());
+            }
         }
-
-        Line line1 = new Line(1, 3, 4);
-        Line line2 = new Line(2, 1, 2);
-        Point intersection = line1.getIntersection(line2);
-        System.out.println(intersection);
 
         start();
     }
