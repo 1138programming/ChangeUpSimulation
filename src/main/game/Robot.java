@@ -10,6 +10,12 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 public class Robot extends Circle {
     public static final double radius = 0.2286;
@@ -24,11 +30,32 @@ public class Robot extends Circle {
     private ArrayDeque<Ball> balls = new ArrayDeque<Ball>(maxBalls);
     private Controller controller = new NullController();
     private Field field;
+    public static BufferedImage redRobotImg;
+    public static BufferedImage blueRobotImg;
+    {
+        try {
+            redRobotImg = ImageIO.read(new File("resources/Red Robot.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            blueRobotImg = ImageIO.read(new File("resources/Blue Robot.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private BufferedImage robotImg;
 
     public Robot(AllianceColor color) {
         // Starts at (0, 0), has a radius of 0.2286 meters (18 inch diameter), has a coefficient of restitution of 0.9, and weighs 4.5 kilograms (10 pounds)
         super(new Point(0, 0), radius, 0.9, 4.5);
         this.color = color;
+        if (color == AllianceColor.RED) {
+            robotImg = redRobotImg;
+        } else {
+            robotImg = blueRobotImg;
+        }
     }
 
     public boolean addBall(Ball ball) {
@@ -163,14 +190,15 @@ public class Robot extends Circle {
         Ball ball = removeFirstBall();
         Goal goal = facingGoal();
         if (goal != null) {
-            if (!goal.scoreBall(ball)) {
-                addBall(ball);
+            if (goal.scoreBall(ball)) {
+                //addBall(ball);
+                return;
             }
-        } else {
-            ball.setPos(facingPos.copy().add(new Vector(Ball.radius, angle).toPoint()));
-            ball.setVelocity(new Vector(ejectVel, angle));
-            ball.setActive(true);
         }
+
+        ball.setPos(facingPos.copy().add(new Vector(Ball.radius, angle).toPoint()));
+        ball.setVelocity(new Vector(ejectVel, angle).add(velocity));
+        ball.setActive(true);
     }
 
     public void setField(Field field) {
@@ -219,12 +247,16 @@ public class Robot extends Circle {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.LIGHT_GRAY);
-        g.fillOval((int)(Field.displayRatio * (pos.x - radius)), (int)(Field.displayRatio * (Field.height - pos.y - radius)), (int)(Field.displayRatio * radius * 2), (int)(Field.displayRatio * radius * 2));
-        g.setColor(color.javaColor);
-        g.drawOval((int)(Field.displayRatio * (pos.x - radius)), (int)(Field.displayRatio * (Field.height - pos.y - radius)), (int)(Field.displayRatio * radius * 2), (int)(Field.displayRatio * radius * 2));
-        g.setColor(Color.BLACK);
-        g.drawLine((int)(Field.displayRatio * pos.x), (int)(Field.displayRatio * (Field.height - pos.y)), (int)(Field.displayRatio * facingPos.x), (int)(Field.displayRatio * (Field.height - facingPos.y)));
+        if (robotImg == null) {
+            g.setColor(Color.LIGHT_GRAY);
+            g.fillOval((int)(Field.displayRatio * (pos.x - radius)), (int)(Field.displayRatio * (Field.height - pos.y - radius)), (int)(Field.displayRatio * radius * 2), (int)(Field.displayRatio * radius * 2));
+            g.setColor(color.javaColor);
+            g.drawOval((int)(Field.displayRatio * (pos.x - radius)), (int)(Field.displayRatio * (Field.height - pos.y - radius)), (int)(Field.displayRatio * radius * 2), (int)(Field.displayRatio * radius * 2));
+            g.setColor(Color.BLACK);
+            g.drawLine((int)(Field.displayRatio * pos.x), (int)(Field.displayRatio * (Field.height - pos.y)), (int)(Field.displayRatio * facingPos.x), (int)(Field.displayRatio * (Field.height - facingPos.y)));
+        } else {
+            g.drawImage(rotateImage(robotImg, -angle.getValue()), (int)(Field.displayRatio * (pos.x - radius)), (int)(Field.displayRatio * (Field.height - pos.y - radius)), display.getDisplayFrame());
+        }
 
         if (balls.size() > 0) {
             Point ballDisplayPoint = facingPos.copy().scale(Field.displayRatio);
@@ -236,6 +268,19 @@ public class Robot extends Circle {
                 g.fillOval((int)(ballDisplayPoint.x - bRadius), (int)(Field.displayRatio * Field.height - ballDisplayPoint.y - bRadius), bRadius * 2, bRadius * 2);
             }
         }
+    }
+
+    private BufferedImage rotateImage(BufferedImage image, double angle) {
+        int width = image.getWidth();
+        int height = image.getHeight();
+        BufferedImage targetImg = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR_PRE);
+        Graphics2D graphics2d = targetImg.createGraphics();
+        graphics2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        graphics2d.translate(0, 0);
+        graphics2d.rotate(angle, width / 2, height / 2);
+        graphics2d.drawImage(image, 0, 0, null);
+        graphics2d.dispose();
+        return targetImg;
     }
 
     @Override
