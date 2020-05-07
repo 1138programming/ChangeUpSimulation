@@ -28,11 +28,27 @@ public class Ball extends Circle {
         }
     }
 
+    public void setVelocity(Vector velocity) {
+        this.velocity = velocity;
+    }
+
     @Override
     public void tick(long dt) {
         if (active) {
             getVelocity().scale(frictionCoef);
             updatePos(dt);
+
+            // Keep the ball in the field
+            if (pos.x < radius) {
+                pos.x = radius;
+            } else if (pos.x > Field.width - radius) {
+                pos.x = Field.width - radius;
+            }
+            if (pos.y < radius) {
+                pos.y = radius;
+            } else if (pos.y > Field.height - radius) {
+                pos.y = Field.height - radius;
+            }
         }
     }
 

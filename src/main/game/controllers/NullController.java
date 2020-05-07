@@ -1,8 +1,7 @@
 package main.game.controllers;
 
 public class NullController implements Controller {
-    public NullController() {
-    }
+    private int i = 0;
 
     public boolean goForward() {
         return false;
@@ -25,6 +24,11 @@ public class NullController implements Controller {
     }
 
     public boolean eject() {
+        if (i == 50) {
+            return true;
+        } else if (i < 50) {
+            i++;
+        }
         return false;
     }
 }

@@ -16,7 +16,7 @@ public class Robot extends Circle {
     public final AllianceColor color;
     private int maxBalls = 3;
     private Angle angle = new Angle(0);
-    private Angle turnAngle = new Angle(Math.PI / 100);
+    private Angle turnAngle = new Angle(Math.PI / 50);
     private Point facingPos = new Point(0, 0);
     private double movingAccel = 3;
     private double maxVel = 3;
@@ -141,19 +141,20 @@ public class Robot extends Circle {
         }
 
         Goal goal = facingGoal();
-        if (goal != null) {
-            Ball ball = goal.descoreBall();
-            if (ball != null) {
-                addBall(ball);
-            }
-        } else {
-            Ball ball = facingBall();
-            if (ball != null) {
-                addBall(ball);
-            }
+        Ball ball = facingBall();
+        double goalInvSqrDistance = goal == null ? 0 : 1 / goal.getPos().sqrDistance(facingPos);
+        double ballInvSqrDistance = ball == null ? 0 : 1 / ball.getPos().sqrDistance(facingPos);
+
+        // Means that the goal is closer
+        if (goalInvSqrDistance > ballInvSqrDistance) {
+            ball = goal.descoreBall();
+        }
+        if (ball != null) {
+            addBall(ball);
         }
     }
 
+    private final double ejectVel = 0.1;
     public void eject() {
         if (balls.size() == 0) {
             return;
@@ -167,6 +168,7 @@ public class Robot extends Circle {
             }
         } else {
             ball.setPos(facingPos.copy().add(new Vector(Ball.radius, angle).toPoint()));
+            ball.setVelocity(new Vector(ejectVel, angle));
             ball.setActive(true);
         }
     }
